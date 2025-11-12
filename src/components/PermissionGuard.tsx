@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
 import { usePermissions } from "@/hooks/usePermissions";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
@@ -20,30 +20,35 @@ export function PermissionGuard({
 }: PermissionGuardProps) {
   const permissions = usePermissions(moduleName);
 
-  if (permissions.loading) {
-    return <div className="text-muted-foreground">Verificando permissões...</div>;
-  }
+  // Memoizar o resultado da verificação de permissão
+  const result = useMemo(() => {
+    if (permissions.loading) {
+      return <div className="text-muted-foreground">Verificando permissões...</div>;
+    }
 
-  // Super admin tem permissão em tudo
-  if (allowSuperAdmin && permissions.isSuperAdmin) {
+    // Super admin tem permissão em tudo
+    if (allowSuperAdmin && permissions.isSuperAdmin) {
+      return <>{children}</>;
+    }
+
+    // Verifica permissão específica
+    const hasPermission = permissions[action];
+
+    if (!hasPermission) {
+      return fallback ? (
+        <>{fallback}</>
+      ) : (
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>
+            Você não tem permissão para {action === "report" ? "gerar relatórios" : action} neste módulo.
+          </AlertDescription>
+        </Alert>
+      );
+    }
+
     return <>{children}</>;
-  }
+  }, [permissions, action, allowSuperAdmin, children, fallback]);
 
-  // Verifica permissão específica
-  const hasPermission = permissions[action];
-
-  if (!hasPermission) {
-    return fallback ? (
-      <>{fallback}</>
-    ) : (
-      <Alert variant="destructive">
-        <AlertCircle className="h-4 w-4" />
-        <AlertDescription>
-          Você não tem permissão para {action === "report" ? "gerar relatórios" : action} neste módulo.
-        </AlertDescription>
-      </Alert>
-    );
-  }
-
-  return <>{children}</>;
+  return result;
 }
