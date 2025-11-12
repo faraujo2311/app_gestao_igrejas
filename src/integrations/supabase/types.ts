@@ -7,14 +7,152 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "13.0.5"
   }
   public: {
     Tables: {
-      [_ in never]: never
+      modules: {
+        Row: {
+          id: string
+          name: string
+          description: string | null
+          order_index: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          description?: string | null
+          order_index?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          description?: string | null
+          order_index?: number
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      functions: {
+        Row: {
+          id: string
+          name: string
+          description: string | null
+          slug: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          description?: string | null
+          slug: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          description?: string | null
+          slug?: string
+          created_at?: string
+        }
+      }
+      module_functions: {
+        Row: {
+          id: string
+          module_id: string
+          function_id: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          module_id: string
+          function_id: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          module_id?: string
+          function_id?: string
+          created_at?: string
+        }
+      }
+      profiles: {
+        Row: {
+          id: string
+          code: string
+          description: string
+          status: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          code: string
+          description: string
+          status?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          code?: string
+          description?: string
+          status?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      profile_module_permissions: {
+        Row: {
+          id: string
+          profile_id: string
+          module_id: string
+          function_id: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          profile_id: string
+          module_id: string
+          function_id: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          profile_id?: string
+          module_id?: string
+          function_id?: string
+          created_at?: string
+        }
+      }
+      user_profiles: {
+        Row: {
+          id: string
+          user_id: string
+          profile_id: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          profile_id: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          profile_id?: string
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never

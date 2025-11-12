@@ -14,6 +14,9 @@ import {
   LogOut,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import {
   Sidebar,
   SidebarContent,
@@ -43,7 +46,19 @@ const menuItems = [
 
 export function AdminSidebar() {
   const { state } = useSidebar();
+  const { signOut, user } = useAuth();
+  const navigate = useNavigate();
   const isCollapsed = state === "collapsed";
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      toast.success("Logout realizado com sucesso");
+      navigate("/login");
+    } catch (error) {
+      toast.error("Erro ao fazer logout");
+    }
+  };
 
   return (
     <Sidebar collapsible="icon" className="border-r border-sidebar-border">
@@ -77,14 +92,28 @@ export function AdminSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
+                <div className="px-2 py-3 border-t border-sidebar-border">
+                  {!isCollapsed && (
+                    <div className="space-y-1">
+                      <p className="text-sm font-semibold text-foreground">
+                        Olá, {user?.user_metadata?.full_name?.split(" ")[0] || "Usuário"}
+                      </p>
+                      <p className="text-xs text-muted-foreground truncate">
+                        {user?.email}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <NavLink
-                    to="/"
-                    className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
+                  <button
+                    onClick={handleLogout}
+                    className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors cursor-pointer flex w-full"
                   >
                     <LogOut className="h-5 w-5" />
                     {!isCollapsed && <span>Sair</span>}
-                  </NavLink>
+                  </button>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
