@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
-import { Trash2, Edit2, Plus, Lock } from 'lucide-react';
+import { Trash2, Edit2, Plus, Lock, Eye, Eye as LockIcon } from 'lucide-react';
 
 interface Profile {
   id: string;
@@ -195,33 +195,79 @@ export default function Perfis() {
                         </TableCell>
                         <TableCell>
                           <div className="flex gap-2">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => navigate(`/admin/perfis/${profile.id}`)}
-                              title="Gerenciar Permissões"
-                              className="gap-1"
+                            <PermissionGuard
+                              moduleName="Perfis"
+                              action="update"
+                              fallback={
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  disabled
+                                  title="Sem permissão"
+                                  className="gap-1 text-gray-400"
+                                >
+                                  <Lock className="w-4 h-4" />
+                                </Button>
+                              }
                             >
-                              <Lock className="w-4 h-4" />
-                              <span className="hidden sm:inline">Permissões</span>
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleOpenDialog(profile)}
-                              title="Editar"
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => navigate(`/admin/perfis/${profile.id}`)}
+                                title="Gerenciar Permissões"
+                                className="gap-1"
+                              >
+                                <Lock className="w-4 h-4" />
+                                <span className="hidden sm:inline">Permissões</span>
+                              </Button>
+                            </PermissionGuard>
+                            <PermissionGuard
+                              moduleName="Perfis"
+                              action="update"
+                              fallback={
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  disabled
+                                  title="Sem permissão"
+                                >
+                                  <Edit2 className="w-4 h-4 text-gray-400" />
+                                </Button>
+                              }
                             >
-                              <Edit2 className="w-4 h-4" />
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="text-red-600 hover:bg-red-50"
-                              onClick={() => handleDelete(profile.id)}
-                              title="Deletar"
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleOpenDialog(profile)}
+                                title="Editar"
+                              >
+                                <Edit2 className="w-4 h-4" />
+                              </Button>
+                            </PermissionGuard>
+                            <PermissionGuard
+                              moduleName="Perfis"
+                              action="delete"
+                              fallback={
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  disabled
+                                  title="Sem permissão"
+                                >
+                                  <Trash2 className="w-4 h-4 text-gray-400" />
+                                </Button>
+                              }
                             >
-                              <Trash2 className="w-4 h-4" />
-                            </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="text-red-600 hover:bg-red-50"
+                                onClick={() => handleDelete(profile.id)}
+                                title="Deletar"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </PermissionGuard>
                           </div>
                         </TableCell>
                       </TableRow>

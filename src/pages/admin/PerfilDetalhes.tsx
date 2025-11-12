@@ -131,15 +131,25 @@ export default function PerfilDetalhes() {
     setCurrentPermissions(newPermissions);
   };
 
+  const markAllPermissions = () => {
+    const allPermissions = new Set<string>();
+    modules.forEach((module) => {
+      getModuleFunctions(module.id).forEach((func) => {
+        allPermissions.add(`${module.id}|${func.id}`);
+      });
+    });
+    setCurrentPermissions(allPermissions);
+  };
+
+  const clearAllPermissions = () => {
+    setCurrentPermissions(new Set());
+  };
+
   const handleSave = async () => {
     try {
       setSaving(true);
 
-      console.log('Salvando permissões para perfil:', id);
-      console.log('Permissões selecionadas:', Array.from(currentPermissions));
-
       // Deletar todas as permissões antigas
-      console.log('Deletando permissões antigas...');
       const { error: deleteError } = await supabase
         .from('profile_module_permissions')
         .delete()
@@ -147,7 +157,7 @@ export default function PerfilDetalhes() {
 
       if (deleteError) {
         console.error('Erro ao deletar permissões antigas:', deleteError);
-        throw deleteError;
+        throw new Error(`Erro ao deletar permissões: ${deleteError.message}`);
       }
 
       // Inserir novas permissões
@@ -161,14 +171,15 @@ export default function PerfilDetalhes() {
       });
 
       if (newPermissions.length > 0) {
-        console.log('Inserindo novas permissões:', newPermissions);
+        console.log('Inserindo permissões:', newPermissions);
+        
         const { error: insertError } = await supabase
           .from('profile_module_permissions')
           .insert(newPermissions);
 
         if (insertError) {
           console.error('Erro ao inserir permissões:', insertError);
-          throw insertError;
+          throw new Error(`Erro ao salvar permissões: ${insertError.message}`);
         }
       }
 
@@ -176,7 +187,7 @@ export default function PerfilDetalhes() {
       navigate('/admin/perfis');
     } catch (error: any) {
       const errorMsg = error.message || 'Erro ao salvar permissões';
-      console.error('Erro completo ao salvar permissões:', errorMsg);
+      console.error('Erro completo:', error);
       alert(errorMsg);
     } finally {
       setSaving(false);
@@ -218,10 +229,30 @@ export default function PerfilDetalhes() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Permissões por Módulo</CardTitle>
-          <CardDescription>
-            Selecione quais funções este perfil pode executar em cada módulo
-          </CardDescription>
+          <div className="flex justify-between items-start">
+            <div>
+              <CardTitle>Permissões por Módulo</CardTitle>
+              <CardDescription>
+                Selecione quais funções este perfil pode executar em cada módulo
+              </CardDescription>
+            </div>
+            <div className="flex gap-2">
+              <Button 
+                size="sm" 
+                variant="outline"
+                onClick={markAllPermissions}
+              >
+                Marcar Todas
+              </Button>
+              <Button 
+                size="sm" 
+                variant="outline"
+                onClick={clearAllPermissions}
+              >
+                Desmarcar Todas
+              </Button>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-6">

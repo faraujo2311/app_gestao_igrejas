@@ -1,41 +1,10 @@
-# 🚀 RESUMO FINAL - PORTAL ADMINISTRATIVO 100% FUNCIONAL
+-- ============================================================
+-- ⚠️ EXECUTE ISTO NO SUPABASE SQL EDITOR EM 3 PARTES
+-- ============================================================
 
-## Status de Conclusão
-
-✅ **Login** - Funciona  
-✅ **Criar Usuários** - Funciona  
-✅ **Saudação do Usuário** - Implementada  
-✅ **Criar Perfis** - Corrigido  
-⏳ **Atribuir Permissões** - Precisa de SQL
-
----
-
-## 🔧 O que foi implementado
-
-### Frontend
-- ✅ Saudação "Olá, [Nome] | [Email]" na sidebar
-- ✅ Botão "Criar Usuário" sempre habilitado
-- ✅ Botão "Criar Perfil" funcionando
-- ✅ Melhor tratamento de erros em todos os formulários
-
-### Backend/Database
-- ✅ Usuário Fábio Araújo criado com perfil SUPER_ADMIN
-- ✅ Email confirmado
-- ✅ RLS habilitado em múltiplas tabelas
-- ✅ Função RPC para listar usuários com email
-
-### Pendente
-- ⏳ RLS em `profile_module_permissions` precisa de políticas de INSERT
-
----
-
-## 📝 SQL FINAL PARA EXECUTAR
-
-Execute no Supabase SQL Editor em **três partes**:
-
-### **PARTE 1: Corrigir profiles (criação de perfis)**
-
-```sql
+-- ============================================================
+-- PARTE 1: Corrigir RLS em profiles (criar perfis)
+-- ============================================================
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Allow public read on profiles" ON profiles;
 DROP POLICY IF EXISTS "Allow insert profiles" ON profiles;
@@ -46,11 +15,10 @@ CREATE POLICY "Allow public read on profiles" ON profiles FOR SELECT USING (TRUE
 CREATE POLICY "Allow insert profiles" ON profiles FOR INSERT WITH CHECK (TRUE);
 CREATE POLICY "Allow update profiles" ON profiles FOR UPDATE USING (TRUE) WITH CHECK (TRUE);
 CREATE POLICY "Allow delete profiles" ON profiles FOR DELETE USING (TRUE);
-```
 
-### **PARTE 2: Corrigir profile_module_permissions (atribuição de permissões)**
-
-```sql
+-- ============================================================
+-- PARTE 2: Corrigir RLS em profile_module_permissions (atribuir permissões)
+-- ============================================================
 ALTER TABLE profile_module_permissions ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Allow public read on profile_module_permissions" ON profile_module_permissions;
 DROP POLICY IF EXISTS "Allow insert on profile_module_permissions" ON profile_module_permissions;
@@ -61,11 +29,10 @@ CREATE POLICY "Allow public read on profile_module_permissions" ON profile_modul
 CREATE POLICY "Allow insert on profile_module_permissions" ON profile_module_permissions FOR INSERT WITH CHECK (TRUE);
 CREATE POLICY "Allow update on profile_module_permissions" ON profile_module_permissions FOR UPDATE USING (TRUE) WITH CHECK (TRUE);
 CREATE POLICY "Allow delete on profile_module_permissions" ON profile_module_permissions FOR DELETE USING (TRUE);
-```
 
-### **PARTE 3: Criar função RPC (listar usuários com email)**
-
-```sql
+-- ============================================================
+-- PARTE 3: Criar função RPC para listar usuários com email
+-- ============================================================
 CREATE OR REPLACE FUNCTION public.get_users_with_profiles()
 RETURNS TABLE (
   user_id UUID,
@@ -94,44 +61,3 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 GRANT EXECUTE ON FUNCTION public.get_users_with_profiles() TO anon, authenticated, service_role;
-```
-
----
-
-## 🎯 Próximos Passos
-
-1. **Execute as 3 partes** do SQL acima (uma por vez)
-2. **Recarregue** o navegador: http://localhost:8082/admin
-3. **Teste tudo:**
-   - Criar novo perfil ✅
-   - Marcar permissões ✅
-   - Criar novo usuário ✅
-
----
-
-## 📊 Resumo de Melhorias
-
-| Funcionalidade | Status | Correção |
-|---|---|---|
-| Login | ✅ | Autenticação funcionando |
-| Criar Usuário | ✅ | Botão agora ativável |
-| Saudação | ✅ | Nome + Email exibido |
-| Criar Perfil | ✅ | RLS corrigido |
-| Atribuir Permissões | ⏳ | Aguarda SQL PARTE 2 |
-| Erros | ✅ | Mensagens detalhadas |
-
----
-
-## 🚀 Deploy/Produção
-
-Quando tudo estiver funcionando:
-
-```bash
-# Fazer push para GitHub
-git add .
-git commit -m "Setup completo: auth, perfis, permissões, usuarios"
-git push origin main
-```
-
-Depois você pode fazer deploy na Vercel, Netlify, etc.
-

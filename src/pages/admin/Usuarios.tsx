@@ -161,6 +161,20 @@ const Usuarios = () => {
     }
 
     try {
+      // Verificar permissão do usuário logado
+      const { data: { user: currentUser } } = await supabase.auth.getUser();
+      
+      if (!currentUser) {
+        toast.error("Usuário não autenticado");
+        return;
+      }
+
+      // Impedir que usuário comum edite perfil (mesmo o seu)
+      if (permissions && !permissions.isSuperAdmin && permissions.update === false) {
+        toast.error("Você não tem permissão para alterar perfis");
+        return;
+      }
+
       // Primeiro, verifica se já existe uma atribuição
       const { data: existing } = await supabase
         .from("user_profiles")
@@ -465,19 +479,24 @@ const Usuarios = () => {
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
-                        <Dialog open={isOpen && selectedUsuario?.id === usuario.id} onOpenChange={setIsOpen}>
-                          <DialogTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => {
-                                setSelectedUsuario(usuario);
-                                setSelectedPerfil(usuario.profile?.id || "");
-                              }}
-                            >
-                              <Pencil className="h-4 w-4" />
-                            </Button>
-                          </DialogTrigger>
+                        <PermissionGuard
+                          moduleName="Usuários"
+                          action="update"
+                          fallback={<Button variant="ghost" size="icon" disabled><Lock className="h-4 w-4" /></Button>}
+                        >
+                          <Dialog open={isOpen && selectedUsuario?.id === usuario.id} onOpenChange={setIsOpen}>
+                            <DialogTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => {
+                                  setSelectedUsuario(usuario);
+                                  setSelectedPerfil(usuario.profile?.id || "");
+                                }}
+                              >
+                                <Pencil className="h-4 w-4" />
+                              </Button>
+                            </DialogTrigger>
                           <DialogContent>
                             <DialogHeader>
                               <DialogTitle>Atribuir Perfil</DialogTitle>
@@ -510,13 +529,20 @@ const Usuarios = () => {
                             </DialogFooter>
                           </DialogContent>
                         </Dialog>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => deletarUsuario(usuario.id)}
+                        </PermissionGuard>
+                        <PermissionGuard
+                          moduleName="Usuários"
+                          action="delete"
+                          fallback={<Button variant="ghost" size="icon" disabled><Lock className="h-4 w-4" /></Button>}
                         >
-                          <Trash2 className="h-4 w-4 text-destructive" />
-                        </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => deletarUsuario(usuario.id)}
+                          >
+                            <Trash2 className="h-4 w-4 text-destructive" />
+                          </Button>
+                        </PermissionGuard>
                       </div>
                     </TableCell>
                   </TableRow>
