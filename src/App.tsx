@@ -13,6 +13,8 @@ import { AdminLayout } from "./components/admin/AdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
 import Ministerios from "./pages/admin/Ministerios";
 import Members from "./pages/admin/Members";
+import Cells from "./pages/admin/Cells";
+import Events from "./pages/admin/Events";
 import Perfis from "./pages/admin/Perfis";
 import PerfilDetalhes from "./pages/admin/PerfilDetalhes";
 import Usuarios from "./pages/admin/Usuarios";
@@ -43,6 +45,8 @@ const App = () => (
               <Route index element={<Dashboard />} />
               <Route path="ministerios" element={<Ministerios />} />
               <Route path="membros" element={<Members />} />
+              <Route path="celulas" element={<Cells />} />
+              <Route path="eventos" element={<Events />} />
               <Route path="usuarios" element={<Usuarios />} />
               <Route path="perfis" element={<Perfis />} />
               <Route path="perfis/:id" element={<PerfilDetalhes />} />
