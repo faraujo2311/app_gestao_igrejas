@@ -2,105 +2,115 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here.
 All colors MUST be HSL.
 */
 
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 220 15% 15%;
+    :root {
+        --background: 210 40% 98%;
+        --foreground: 220 15% 20%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 220 15% 15%;
+        --card: 0 0% 100%;
+        --card-foreground: 220 15% 20%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 15%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 220 15% 20%;
 
-    --primary: 230 65% 25%;
-    --primary-foreground: 0 0% 100%;
+        --primary: 230 70% 55%;
+        --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 20% 96%;
-    --secondary-foreground: 230 65% 25%;
+        --secondary: 210 30% 96%;
+        --secondary-foreground: 230 70% 55%;
 
-    --muted: 210 20% 96%;
-    --muted-foreground: 220 15% 45%;
+        --muted: 210 30% 96%;
+        --muted-foreground: 220 15% 45%;
 
-    --accent: 40 95% 55%;
-    --accent-foreground: 0 0% 100%;
+        --accent: 45 95% 55%;
+        --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 0 0% 100%;
 
-    --border: 210 20% 90%;
-    --input: 210 20% 90%;
-    --ring: 230 65% 25%;
+        --border: 210 25% 92%;
+        --input: 210 25% 92%;
+        --ring: 230 70% 55%;
 
-    --radius: 0.5rem;
+        --radius: 0.5rem;
 
-    /* Church-specific design tokens */
-    --gradient-hero: linear-gradient(135deg, hsl(230 65% 25%) 0%, hsl(230 55% 35%) 100%);
-    --gradient-accent: linear-gradient(135deg, hsl(40 95% 55%) 0%, hsl(35 90% 60%) 100%);
-    --shadow-soft: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-medium: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    --shadow-glow: 0 0 20px hsl(40 95% 55% / 0.3);
+        /* Church-specific design tokens */
+        --gradient-hero: linear-gradient(
+            135deg,
+            hsl(230 70% 55%) 0%,
+            hsl(230 60% 65%) 100%
+        );
+        --gradient-accent: linear-gradient(
+            135deg,
+            hsl(45 95% 55%) 0%,
+            hsl(40 90% 60%) 100%
+        );
+        --shadow-soft:
+            0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        --shadow-medium:
+            0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        --shadow-glow: 0 0 20px hsl(45 95% 55% / 0.3);
 
-    --sidebar-background: 230 65% 25%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 40 95% 55%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 230 55% 30%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 230 45% 20%;
-    --sidebar-ring: 40 95% 55%;
-  }
+        --sidebar-background: 230 70% 55%;
+        --sidebar-foreground: 0 0% 95%;
+        --sidebar-primary: 45 95% 55%;
+        --sidebar-primary-foreground: 0 0% 100%;
+        --sidebar-accent: 230 60% 60%;
+        --sidebar-accent-foreground: 0 0% 100%;
+        --sidebar-border: 230 50% 50%;
+        --sidebar-ring: 45 95% 55%;
+    }
 
-  .dark {
-    --background: 220 20% 10%;
-    --foreground: 0 0% 95%;
+    .dark {
+        --background: 220 20% 10%;
+        --foreground: 0 0% 95%;
 
-    --card: 220 20% 12%;
-    --card-foreground: 0 0% 95%;
+        --card: 220 20% 12%;
+        --card-foreground: 0 0% 95%;
 
-    --popover: 220 20% 12%;
-    --popover-foreground: 0 0% 95%;
+        --popover: 220 20% 12%;
+        --popover-foreground: 0 0% 95%;
 
-    --primary: 230 65% 50%;
-    --primary-foreground: 0 0% 100%;
+        --primary: 230 65% 50%;
+        --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 20% 20%;
-    --secondary-foreground: 0 0% 95%;
+        --secondary: 220 20% 20%;
+        --secondary-foreground: 0 0% 95%;
 
-    --muted: 220 20% 20%;
-    --muted-foreground: 0 0% 65%;
+        --muted: 220 20% 20%;
+        --muted-foreground: 0 0% 65%;
 
-    --accent: 40 95% 55%;
-    --accent-foreground: 0 0% 100%;
+        --accent: 40 95% 55%;
+        --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 62.8% 50%;
-    --destructive-foreground: 0 0% 100%;
+        --destructive: 0 62.8% 50%;
+        --destructive-foreground: 0 0% 100%;
 
-    --border: 220 20% 20%;
-    --input: 220 20% 20%;
-    --ring: 230 65% 50%;
+        --border: 220 20% 20%;
+        --input: 220 20% 20%;
+        --ring: 230 65% 50%;
 
-    --sidebar-background: 220 25% 8%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 40 95% 55%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 20% 15%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 220 20% 15%;
-    --sidebar-ring: 40 95% 55%;
-  }
+        --sidebar-background: 220 25% 8%;
+        --sidebar-foreground: 0 0% 95%;
+        --sidebar-primary: 40 95% 55%;
+        --sidebar-primary-foreground: 0 0% 100%;
+        --sidebar-accent: 220 20% 15%;
+        --sidebar-accent-foreground: 0 0% 95%;
+        --sidebar-border: 220 20% 15%;
+        --sidebar-ring: 40 95% 55%;
+    }
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
+    * {
+        @apply border-border;
+    }
 
-  body {
-    @apply bg-background text-foreground;
-  }
+    body {
+        @apply bg-background text-foreground;
+    }
 }

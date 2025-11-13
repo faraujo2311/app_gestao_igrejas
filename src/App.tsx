@@ -1,3 +1,4 @@
+import { ThemeProvider } from "@/contexts/ThemeContext";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -25,37 +26,39 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/setup" element={<Setup />} />
-            <Route
-              path="/admin"
-              element={
-                <ProtectedRoute>
-                  <AdminLayout />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<Dashboard />} />
-              <Route path="ministerios" element={<Ministerios />} />
-              <Route path="membros" element={<Members />} />
-              <Route path="celulas" element={<Cells />} />
-              <Route path="eventos" element={<Events />} />
-              <Route path="usuarios" element={<Usuarios />} />
-              <Route path="perfis" element={<Perfis />} />
-              <Route path="perfis/:id" element={<PerfilDetalhes />} />
-            </Route>
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Landing />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/setup" element={<Setup />} />
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout />
+                  </ProtectedRoute>
+                }
+              >
+                <Route index element={<Dashboard />} />
+                <Route path="ministerios" element={<Ministerios />} />
+                <Route path="membros" element={<Members />} />
+                <Route path="celulas" element={<Cells />} />
+                <Route path="eventos" element={<Events />} />
+                <Route path="usuarios" element={<Usuarios />} />
+                <Route path="perfis" element={<Perfis />} />
+                <Route path="perfis/:id" element={<PerfilDetalhes />} />
+              </Route>
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </ThemeProvider>
     </AuthProvider>
   </QueryClientProvider>
 );
